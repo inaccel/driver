@@ -17,6 +17,18 @@
 [ ${DEBUG} ] && set -vx
 set -eu
 
-SYSROOT_DIR=$(realpath ${DRIVER_SYSROOT_DIR:-/})
+if [ -z ${INACCEL:-} ]; then
+	SYSROOT_DIR=$(realpath ${DRIVER_SYSROOT_DIR:-/})
 
-chroot ${SYSROOT_DIR} ${@}
+	DRIVER=$(mktemp --tmpdir=${SYSROOT_DIR})
+
+	cp --force --preserve=all ${0} ${DRIVER}
+
+	INACCEL=1 exec chroot ${SYSROOT_DIR} /$(realpath --relative-to=${SYSROOT_DIR} ${DRIVER}) ${@}
+fi
+
+rm --force ${0}
+
+################################################################################
+
+${@}
