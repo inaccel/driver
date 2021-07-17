@@ -5,7 +5,6 @@ services:
     environment:
     - DRIVER_SYSROOT_DIR=/host
     image: inaccel/driver:${TAG:-latest}
-    network_mode: host
     privileged: true
     volumes:
     - /:/host

@@ -24,10 +24,14 @@ if [ -z ${INACCEL:-} ]; then
 
 	cp --force --preserve=all ${0} ${DRIVER}
 
+	mount --bind /etc/resolv.conf $(realpath --canonicalize-missing --no-symlinks ${SYSROOT_DIR}/etc/resolv.conf)
+
 	INACCEL=1 exec chroot ${SYSROOT_DIR} /$(realpath --relative-to=${SYSROOT_DIR} ${DRIVER}) ${@}
 fi
 
 rm --force ${0}
+
+trap "umount /etc/resolv.conf" EXIT
 
 ################################################################################
 
