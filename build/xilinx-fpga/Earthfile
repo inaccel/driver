@@ -1,0 +1,77 @@
+all:
+	BUILD +amazonlinux2
+	BUILD +centos7
+	BUILD +centos8
+	BUILD +ubuntu16.04
+	BUILD +ubuntu18.04
+	BUILD +ubuntu20.04
+
+core:
+	ARG NAME
+	ARG TAG
+	FROM ${NAME}:${TAG}
+
+	# SHELL ["/bin/bash", "-c"]
+	RUN ln -fs /bin/bash /bin/sh
+
+	GIT CLONE https://github.com/aws/aws-fpga.git /aws-fpga
+
+	ARG RELEASE
+	RUN test "${RELEASE}"
+	GIT CLONE --branch ${RELEASE} http://www.github.com/Xilinx/XRT.git /XRT
+
+	IF [ ${NAME} = "ubuntu" ]
+		ENV DEBIAN_FRONTEND=noninteractive
+
+		RUN apt update
+	ELSE
+		RUN yum makecache
+	END
+
+	RUN sed -i 's/amazon-linux-extras install epel/amazon-linux-extras install -y epel/g' XRT/src/runtime_src/tools/scripts/xrtdeps.sh && \
+		sed -i 's/apt install clang-tidy/apt install -y clang-tidy/g' XRT/src/runtime_src/tools/scripts/xrtdeps.sh && \
+		sed -i 's/kernel-devel-$(uname -r)/kernel-devel/g' XRT/src/runtime_src/tools/scripts/xrtdeps.sh && \
+		sed -i 's/kernel-headers-$(uname -r)/kernel-headers/g' XRT/src/runtime_src/tools/scripts/xrtdeps.sh && \
+		sed -i 's/linux-headers-$(uname -r)/linux-headers-generic/g' XRT/src/runtime_src/tools/scripts/xrtdeps.sh
+
+	RUN XRT/src/runtime_src/tools/scripts/xrtdeps.sh
+
+	IF [ ${NAME} = "centos" ] && [ ${TAG} = "7" ]
+		RUN source aws-fpga/vitis_setup.sh || : && \
+			source scl_source enable devtoolset-9 && \
+			/XRT/build/build.sh -noctest -opt
+	ELSE
+		RUN source aws-fpga/vitis_setup.sh || : && \
+			/XRT/build/build.sh -noctest -opt
+	END
+
+	IF [ ${NAME} = "ubuntu" ]
+		RUN . /etc/os-release && \
+			mkdir packages && \
+			mv XRT/build/Release/xrt_${RELEASE%.*}.0_${TAG}-amd64-aws.deb packages/xrt-aws_${RELEASE}_${ID}${VERSION_ID}_amd64.deb && \
+			mv XRT/build/Release/xrt_${RELEASE%.*}.0_${TAG}-amd64-azure.deb packages/xrt-azure_${RELEASE}_${ID}${VERSION_ID}_amd64.deb && \
+			mv XRT/build/Release/xrt_${RELEASE%.*}.0_${TAG}-amd64-xrt.deb packages/xrt_${RELEASE}_${ID}${VERSION_ID}_amd64.deb
+	ELSE
+		RUN . /etc/os-release && \
+			mkdir packages && \
+			mv XRT/build/Release/xrt_${RELEASE%.*}.0_$(lsb_release -rs)-x86_64-aws.rpm packages/xrt-aws-${RELEASE}_${ID}${VERSION_ID}-1.x86_64.rpm && \
+			mv XRT/build/Release/xrt_${RELEASE%.*}.0_$(lsb_release -rs)-x86_64-azure.rpm packages/xrt-azure-${RELEASE}_${ID}${VERSION_ID}-1.x86_64.rpm && \
+			mv XRT/build/Release/xrt_${RELEASE%.*}.0_$(lsb_release -rs)-x86_64-xrt.rpm packages/xrt-${RELEASE}_${ID}${VERSION_ID}-1.x86_64.rpm
+	END
+
+	SAVE ARTIFACT packages AS LOCAL packages
+
+amazonlinux2:
+	BUILD --build-arg=NAME=amazonlinux --build-arg=TAG=2 +core
+
+centos7:
+	BUILD --build-arg=NAME=centos --build-arg=TAG=7 +core
+centos8:
+	BUILD --build-arg=NAME=centos --build-arg=TAG=8 +core
+
+ubuntu16.04:
+	BUILD --build-arg=NAME=ubuntu --build-arg=TAG=16.04 +core
+ubuntu18.04:
+	BUILD --build-arg=NAME=ubuntu --build-arg=TAG=18.04 +core
+ubuntu20.04:
+	BUILD --build-arg=NAME=ubuntu --build-arg=TAG=20.04 +core
