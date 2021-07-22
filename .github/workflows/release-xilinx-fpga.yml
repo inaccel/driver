@@ -1,0 +1,59 @@
+name: release-xilinx-fpga
+on:
+  workflow_dispatch:
+    inputs:
+      release:
+        description: RELEASE
+        required: true
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - uses: earthly/actions/setup-earthly@v1
+    - name: Build 'Xilinx FPGA' drivers
+      run: earthly --build-arg=RELEASE=${{ github.event.inputs.release }} +all
+      working-directory: build/xilinx-fpga
+      env:
+        EARTHLY_CI: 0
+        EARTHLY_SAVE_INLINE_CACHE: 1
+        EARTHLY_STRICT: 1
+        EARTHLY_USE_INLINE_CACHE: 1
+    - name: Release packages
+      uses: softprops/action-gh-release@v1
+      with:
+        body: |
+          <details><summary>Amazon Linux 2</summary><p>
+
+          &nbsp;&nbsp;&nbsp;&nbsp;[ [xrt](https://github.com/inaccel/driver/releases/download/xilinx-fpga-${{ github.event.inputs.release }}/xrt-${{ github.event.inputs.release }}_amzn2-1.x86_64.rpm) | [xrt-aws](https://github.com/inaccel/driver/releases/download/xilinx-fpga-${{ github.event.inputs.release }}/xrt-aws-${{ github.event.inputs.release }}_amzn2-1.x86_64.rpm) | [xrt-azure](https://github.com/inaccel/driver/releases/download/xilinx-fpga-${{ github.event.inputs.release }}/xrt-azure-${{ github.event.inputs.release }}_amzn2-1.x86_64.rpm) ]
+          </p></details>
+
+          <details><summary>CentOS Linux 7</summary><p>
+
+          &nbsp;&nbsp;&nbsp;&nbsp;[ [xrt](https://github.com/inaccel/driver/releases/download/xilinx-fpga-${{ github.event.inputs.release }}/xrt-${{ github.event.inputs.release }}_centos7-1.x86_64.rpm) | [xrt-aws](https://github.com/inaccel/driver/releases/download/xilinx-fpga-${{ github.event.inputs.release }}/xrt-aws-${{ github.event.inputs.release }}_centos7-1.x86_64.rpm) | [xrt-azure](https://github.com/inaccel/driver/releases/download/xilinx-fpga-${{ github.event.inputs.release }}/xrt-azure-${{ github.event.inputs.release }}_centos7-1.x86_64.rpm) ]
+          </p></details>
+
+          <details><summary>CentOS Linux 8</summary><p>
+
+          &nbsp;&nbsp;&nbsp;&nbsp;[ [xrt](https://github.com/inaccel/driver/releases/download/xilinx-fpga-${{ github.event.inputs.release }}/xrt-${{ github.event.inputs.release }}_centos8-1.x86_64.rpm) | [xrt-aws](https://github.com/inaccel/driver/releases/download/xilinx-fpga-${{ github.event.inputs.release }}/xrt-aws-${{ github.event.inputs.release }}_centos8-1.x86_64.rpm) | [xrt-azure](https://github.com/inaccel/driver/releases/download/xilinx-fpga-${{ github.event.inputs.release }}/xrt-azure-${{ github.event.inputs.release }}_centos8-1.x86_64.rpm) ]
+          </p></details>
+
+          <details><summary>Ubuntu 16.04</summary><p>
+
+          &nbsp;&nbsp;&nbsp;&nbsp;[ [xrt](https://github.com/inaccel/driver/releases/download/xilinx-fpga-${{ github.event.inputs.release }}/xrt_${{ github.event.inputs.release }}_ubuntu16.04_amd64.deb) | [xrt-aws](https://github.com/inaccel/driver/releases/download/xilinx-fpga-${{ github.event.inputs.release }}/xrt-aws_${{ github.event.inputs.release }}_ubuntu16.04_amd64.deb) | [xrt-azure](https://github.com/inaccel/driver/releases/download/xilinx-fpga-${{ github.event.inputs.release }}/xrt-azure_${{ github.event.inputs.release }}_ubuntu16.04_amd64.deb) ]
+          </p></details>
+
+          <details><summary>Ubuntu 18.04</summary><p>
+
+          &nbsp;&nbsp;&nbsp;&nbsp;[ [xrt](https://github.com/inaccel/driver/releases/download/xilinx-fpga-${{ github.event.inputs.release }}/xrt_${{ github.event.inputs.release }}_ubuntu18.04_amd64.deb) | [xrt-aws](https://github.com/inaccel/driver/releases/download/xilinx-fpga-${{ github.event.inputs.release }}/xrt-aws_${{ github.event.inputs.release }}_ubuntu18.04_amd64.deb) | [xrt-azure](https://github.com/inaccel/driver/releases/download/xilinx-fpga-${{ github.event.inputs.release }}/xrt-azure_${{ github.event.inputs.release }}_ubuntu18.04_amd64.deb) ]
+          </p></details>
+
+          <details><summary>Ubuntu 20.04</summary><p>
+
+          &nbsp;&nbsp;&nbsp;&nbsp;[ [xrt](https://github.com/inaccel/driver/releases/download/xilinx-fpga-${{ github.event.inputs.release }}/xrt_${{ github.event.inputs.release }}_ubuntu20.04_amd64.deb) | [xrt-aws](https://github.com/inaccel/driver/releases/download/xilinx-fpga-${{ github.event.inputs.release }}/xrt-aws_${{ github.event.inputs.release }}_ubuntu20.04_amd64.deb) | [xrt-azure](https://github.com/inaccel/driver/releases/download/xilinx-fpga-${{ github.event.inputs.release }}/xrt-azure_${{ github.event.inputs.release }}_ubuntu20.04_amd64.deb) ]
+          </p></details>
+        files: build/xilinx-fpga/packages/*
+        tag_name: xilinx-fpga-${{ github.event.inputs.release }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
