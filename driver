@@ -18,6 +18,18 @@
 set -eu
 
 if [ -z ${INACCEL:-} ]; then
+	spider() {
+		wget --connect-timeout=1 --header="Metadata: true" --output-document=/dev/null --quiet --tries=1 ${@}
+	}
+
+	if spider "http://169.254.169.254/2007-01-19/meta-data"; then
+		export CLOUD_PROVIDER=aws
+	elif spider "http://169.254.169.254/metadata?api-version=2017-03-01&format=text"; then
+		export CLOUD_PROVIDER=azure
+	else
+		exit
+	fi
+
 	SYSROOT_DIR=$(realpath ${DRIVER_SYSROOT_DIR:-/})
 
 	DRIVER=$(mktemp --tmpdir=${SYSROOT_DIR})
