@@ -59,7 +59,7 @@ core:
 			mv XRT/build/Release/xrt_${RELEASE%.*}.0_$(lsb_release -rs)-x86_64-xrt.rpm packages/xrt-${RELEASE}_${ID}${VERSION_ID}-1.x86_64.rpm
 	END
 
-	SAVE ARTIFACT packages AS LOCAL packages
+	SAVE ARTIFACT packages/* AS LOCAL packages/
 
 amazonlinux2:
 	BUILD --build-arg=NAME=amazonlinux --build-arg=TAG=2 +core
