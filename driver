@@ -32,19 +32,21 @@ if [ -z ${INACCEL:-} ]; then
 
 	SYSROOT_DIR=$(realpath ${DRIVER_SYSROOT_DIR:-/})
 
-	DRIVER=$(mktemp --tmpdir=${SYSROOT_DIR})
+	TMPDIR=$(mktemp --directory --tmpdir=${SYSROOT_DIR} inaccel.XXXXXXXXXX)
 
-	cp --force --preserve=all ${0} ${DRIVER}
+	cp ${0} ${TMPDIR}/init
+
+	cat scripts/* >> ${TMPDIR}/init
 
 	mount --bind /etc/resolv.conf $(realpath --canonicalize-missing --no-symlinks ${SYSROOT_DIR}/etc/resolv.conf)
 
-	INACCEL=1 exec chroot ${SYSROOT_DIR} /$(realpath --relative-to=${SYSROOT_DIR} ${DRIVER}) ${@}
+	export TMPDIR=/$(realpath --relative-to=${SYSROOT_DIR} ${TMPDIR})
+
+	INACCEL=1 exec chroot ${SYSROOT_DIR} ${TMPDIR}/init ${@}
 fi
 
-rm --force ${0}
+chdir ${TMPDIR}
 
-trap "umount /etc/resolv.conf" EXIT
+trap "rm --force --recursive ${TMPDIR} ; umount /etc/resolv.conf" EXIT
 
 ################################################################################
-
-${@}
