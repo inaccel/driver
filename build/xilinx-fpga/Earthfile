@@ -20,11 +20,13 @@ core:
 	RUN test "${RELEASE}"
 	GIT CLONE --branch ${RELEASE} http://www.github.com/Xilinx/XRT.git /XRT
 
+	# APT
 	IF [ ${NAME} = "ubuntu" ]
 		ENV DEBIAN_FRONTEND=noninteractive
 
 		RUN apt update
-	ELSE
+	# YUM
+	ELSE IF [ ${NAME} = "amazonlinux" ] || [ ${NAME} = "centos" ]
 		RUN yum makecache
 	END
 
@@ -45,18 +47,20 @@ core:
 			/XRT/build/build.sh -noctest -opt
 	END
 
+	# DEB
 	IF [ ${NAME} = "ubuntu" ]
 		RUN . /etc/os-release && \
 			mkdir packages && \
-			mv XRT/build/Release/xrt_${RELEASE%.*}.0_${TAG}-amd64-aws.deb packages/xrt-aws_${RELEASE}_${ID}${VERSION_ID}_amd64.deb && \
-			mv XRT/build/Release/xrt_${RELEASE%.*}.0_${TAG}-amd64-azure.deb packages/xrt-azure_${RELEASE}_${ID}${VERSION_ID}_amd64.deb && \
-			mv XRT/build/Release/xrt_${RELEASE%.*}.0_${TAG}-amd64-xrt.deb packages/xrt_${RELEASE}_${ID}${VERSION_ID}_amd64.deb
-	ELSE
+			mv $(ls XRT/build/Release/xrt*-aws.deb) packages/xrt-aws_${RELEASE}_${ID}${VERSION_ID}_amd64.deb && \
+			mv $(ls XRT/build/Release/xrt*-azure.deb) packages/xrt-azure_${RELEASE}_${ID}${VERSION_ID}_amd64.deb && \
+			mv $(ls XRT/build/Release/xrt*-xrt.deb) packages/xrt_${RELEASE}_${ID}${VERSION_ID}_amd64.deb
+	# RPM
+	ELSE IF [ ${NAME} = "amazonlinux" ] || [ ${NAME} = "centos" ]
 		RUN . /etc/os-release && \
 			mkdir packages && \
-			mv XRT/build/Release/xrt_${RELEASE%.*}.0_$(lsb_release -rs)-x86_64-aws.rpm packages/xrt-aws-${RELEASE}_${ID}${VERSION_ID}-1.x86_64.rpm && \
-			mv XRT/build/Release/xrt_${RELEASE%.*}.0_$(lsb_release -rs)-x86_64-azure.rpm packages/xrt-azure-${RELEASE}_${ID}${VERSION_ID}-1.x86_64.rpm && \
-			mv XRT/build/Release/xrt_${RELEASE%.*}.0_$(lsb_release -rs)-x86_64-xrt.rpm packages/xrt-${RELEASE}_${ID}${VERSION_ID}-1.x86_64.rpm
+			mv $(ls XRT/build/Release/xrt*-aws.rpm) packages/xrt-aws-${RELEASE}_${ID}${VERSION_ID}-1.x86_64.rpm && \
+			mv $(ls XRT/build/Release/xrt*-azure.rpm) packages/xrt-azure-${RELEASE}_${ID}${VERSION_ID}-1.x86_64.rpm && \
+			mv $(ls XRT/build/Release/xrt*-xrt.rpm) packages/xrt-${RELEASE}_${ID}${VERSION_ID}-1.x86_64.rpm
 	END
 
 	SAVE ARTIFACT packages/* AS LOCAL packages/
