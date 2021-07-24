@@ -26,8 +26,6 @@ if [ -z ${INACCEL:-} ]; then
 		export CLOUD_PROVIDER=aws
 	elif spider "http://169.254.169.254/metadata?api-version=2017-03-01&format=text"; then
 		export CLOUD_PROVIDER=azure
-	else
-		exit
 	fi
 
 	SYSROOT_DIR=$(realpath ${DRIVER_SYSROOT_DIR:-/})
