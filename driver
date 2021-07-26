@@ -30,13 +30,13 @@ if [ -z ${INACCEL:-} ]; then
 
 	SYSROOT_DIR=$(realpath ${DRIVER_SYSROOT_DIR:-/})
 
+	mount --bind /etc/resolv.conf $(realpath ${SYSROOT_DIR}/$(chroot ${SYSROOT_DIR} realpath /etc/resolv.conf))
+
 	TMPDIR=$(mktemp --directory --tmpdir=${SYSROOT_DIR} inaccel.XXXXXXXXXX)
 
 	cp ${0} ${TMPDIR}/init
 
 	cat scripts/* >> ${TMPDIR}/init
-
-	mount --bind /etc/resolv.conf $(realpath --canonicalize-missing --no-symlinks ${SYSROOT_DIR}/etc/resolv.conf)
 
 	export TMPDIR=/$(realpath --relative-to=${SYSROOT_DIR} ${TMPDIR})
 
