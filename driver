@@ -43,7 +43,7 @@ if [ -z ${INACCEL:-} ]; then
 	INACCEL=1 exec chroot ${SYSROOT_DIR} ${TMPDIR}/init ${@}
 fi
 
-chdir ${TMPDIR}
+cd ${TMPDIR}
 
 trap "rm --force --recursive ${TMPDIR} ; umount /etc/resolv.conf" EXIT
 
