@@ -55,5 +55,3 @@ jobs:
           </p></details>
         files: build/xilinx-fpga/packages/*
         tag_name: xilinx-fpga-${{ github.event.inputs.release }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
