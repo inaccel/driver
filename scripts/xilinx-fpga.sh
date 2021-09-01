@@ -61,13 +61,10 @@ if [ ${CLOUD_PROVIDER:-} ] && [ ${XILINX_FPGA:-} ]; then
 		else
 			yum upgrade -y ./inaccel-fpga.rpm
 		fi
-	elif [ $ID = centos ]; then
+	elif [ ${ID} = centos ]; then
 		VERSION=$(cat /etc/centos-release | cut -d " " -f 4)
 		MAJOR_VERSION=$(echo ${VERSION} | cut -d . -f 1)
 		MINOR_VERSION=$(echo ${VERSION} | cut -d . -f 2)
-
-		APPSTREAM=base
-		POWERTOOLS=base
 
 		if [ ${MAJOR_VERSION} -eq 8 ]; then
 			# CentOS 8 Vault
@@ -96,11 +93,11 @@ if [ ${CLOUD_PROVIDER:-} ] && [ ${XILINX_FPGA:-} ]; then
 
 		# Install Xilinx FPGA packages
 		if ! yum list installed xrt; then
-			yum install -y --enablerepo=${APPSTREAM} --enablerepo=${POWERTOOLS} ./xrt.rpm
-			yum install -y --enablerepo=${APPSTREAM} --enablerepo=${POWERTOOLS} ./xrt-${CLOUD_PROVIDER}.rpm
+			yum install -y ${APPSTREAM:+--enablerepo=${APPSTREAM}} ${POWERTOOLS:+--enablerepo=${POWERTOOLS}} ./xrt.rpm
+			yum install -y ${APPSTREAM:+--enablerepo=${APPSTREAM}} ${POWERTOOLS:+--enablerepo=${POWERTOOLS}} ./xrt-${CLOUD_PROVIDER}.rpm
 		else
-			yum upgrade -y --enablerepo=${APPSTREAM} --enablerepo=${POWERTOOLS} ./xrt.rpm
-			yum upgrade -y --enablerepo=${APPSTREAM} --enablerepo=${POWERTOOLS} ./xrt-${CLOUD_PROVIDER}.rpm
+			yum upgrade -y ${APPSTREAM:+--enablerepo=${APPSTREAM}} ${POWERTOOLS:+--enablerepo=${POWERTOOLS}} ./xrt.rpm
+			yum upgrade -y ${APPSTREAM:+--enablerepo=${APPSTREAM}} ${POWERTOOLS:+--enablerepo=${POWERTOOLS}} ./xrt-${CLOUD_PROVIDER}.rpm
 		fi
 
 		# Install InAccel runtime
