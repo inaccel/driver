@@ -43,6 +43,6 @@ fi
 
 cd ${TMPDIR}
 
-trap "rm --force --recursive ${TMPDIR}" EXIT
+trap "rm -fr ${TMPDIR}" EXIT
 
 ################################################################################
