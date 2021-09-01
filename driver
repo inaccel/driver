@@ -30,8 +30,6 @@ if [ -z ${INACCEL:-} ]; then
 
 	SYSROOT_DIR=$(realpath ${DRIVER_SYSROOT_DIR:-/})
 
-	mount --bind /etc/resolv.conf $(realpath ${SYSROOT_DIR}/$(chroot ${SYSROOT_DIR} realpath /etc/resolv.conf))
-
 	TMPDIR=$(mktemp --directory --tmpdir=${SYSROOT_DIR} inaccel.XXXXXXXXXX)
 
 	cp ${0} ${TMPDIR}/init
@@ -45,6 +43,6 @@ fi
 
 cd ${TMPDIR}
 
-trap "rm --force --recursive ${TMPDIR} ; umount /etc/resolv.conf" EXIT
+trap "rm --force --recursive ${TMPDIR}" EXIT
 
 ################################################################################
