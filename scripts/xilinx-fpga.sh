@@ -13,7 +13,7 @@ if [ ${CLOUD_PROVIDER:-} ] && [ ${XILINX_FPGA:-} ]; then
 	RELEASE=202110.2.11.634
 
 	# InAccel runtime
-	INACCEL_FPGA=2.0.1
+	INACCEL_FPGA=2.0.2
 
 	. /etc/os-release
 
@@ -27,7 +27,7 @@ if [ ${CLOUD_PROVIDER:-} ] && [ ${XILINX_FPGA:-} ]; then
 		wget -O xrt-${CLOUD_PROVIDER}.deb https://github.com/inaccel/driver/releases/download/xilinx-fpga-${RELEASE}/xrt-${CLOUD_PROVIDER}_${RELEASE}_${ID}${VERSION_ID}_amd64.deb
 
 		# Download InAccel runtime
-		wget -O inaccel-fpga.deb https://dl.cloudsmith.io/public/inaccel/stable/deb/any-distro/pool/any-version/main/i/in/inaccel-fpga_${INACCEL_FPGA}_amd64.deb
+		wget -O inaccel-fpga.deb https://dl.cloudsmith.io/public/inaccel/stable/deb/any-distro/pool/any-version/main/i/in/inaccel-fpga_2.0.2/inaccel-fpga_${INACCEL_FPGA}_amd64.deb
 	elif type yum; then
 		yum makecache && yum install -y wget
 
