@@ -22,7 +22,7 @@ if [ -z ${INACCEL:-} ]; then
 		wget --connect-timeout=1 --header="Metadata: true" --output-document=/dev/null --quiet --tries=1 ${@}
 	}
 
-	if spider "http://169.254.169.254/2007-01-19/meta-data"; then
+	if spider "http://169.254.169.254/2009-04-04/dynamic"; then
 		export CLOUD_PROVIDER=aws
 	elif spider "http://169.254.169.254/metadata?api-version=2017-03-01&format=text"; then
 		export CLOUD_PROVIDER=azure
