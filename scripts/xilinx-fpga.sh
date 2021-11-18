@@ -10,7 +10,7 @@ else
 fi
 
 if [ ${CLOUD_PROVIDER:-} ] && [ ${XILINX_FPGA:-} ]; then
-	RELEASE=202110.2.11.634
+	RELEASE=202120.2.12.427
 
 	# InAccel runtime
 	INACCEL_FPGA=2.0.2
