@@ -32,6 +32,8 @@ if [ -z ${INACCEL:-} ]; then
 
 	TMPDIR=$(mktemp --directory --tmpdir=${SYSROOT_DIR} inaccel.XXXXXXXXXX)
 
+	chmod 0755 ${TMPDIR}
+
 	cp ${0} ${TMPDIR}/init
 
 	cat scripts/* >> ${TMPDIR}/init
