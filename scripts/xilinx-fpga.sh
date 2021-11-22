@@ -17,18 +17,7 @@ if [ ${CLOUD_PROVIDER:-} ] && [ ${XILINX_FPGA:-} ]; then
 
 	. /etc/os-release
 
-	if type apt; then
-		export DEBIAN_FRONTEND=noninteractive
-
-		apt update && apt install -y wget
-
-		# Download Xilinx FPGA packages
-		wget -O xrt.deb https://github.com/inaccel/driver/releases/download/xilinx-fpga-${RELEASE}/xrt_${RELEASE}_${ID}${VERSION_ID}_amd64.deb
-		wget -O xrt-${CLOUD_PROVIDER}.deb https://github.com/inaccel/driver/releases/download/xilinx-fpga-${RELEASE}/xrt-${CLOUD_PROVIDER}_${RELEASE}_${ID}${VERSION_ID}_amd64.deb
-
-		# Download InAccel runtime
-		wget -O inaccel-fpga.deb https://dl.cloudsmith.io/public/inaccel/stable/deb/any-distro/pool/any-version/main/i/in/inaccel-fpga_2.0.2/inaccel-fpga_${INACCEL_FPGA}_amd64.deb
-	elif type yum; then
+	if [ ${ID} = amzn ]; then
 		yum makecache && yum install -y wget
 
 		# Download Xilinx FPGA packages
@@ -37,9 +26,7 @@ if [ ${CLOUD_PROVIDER:-} ] && [ ${XILINX_FPGA:-} ]; then
 
 		# Download InAccel runtime
 		wget -O inaccel-fpga.rpm https://dl.cloudsmith.io/public/inaccel/stable/rpm/any-distro/any-version/x86_64/inaccel-fpga-${INACCEL_FPGA}-1.x86_64.rpm
-	fi
 
-	if [ ${ID} = amzn ]; then
 		# Install Extra Packages for Enterprise Linux (EPEL)
 		amazon-linux-extras install -y epel
 
@@ -62,6 +49,17 @@ if [ ${CLOUD_PROVIDER:-} ] && [ ${XILINX_FPGA:-} ]; then
 			yum upgrade -y ./inaccel-fpga.rpm
 		fi
 	elif [ ${ID} = centos ]; then
+		setenforce 0
+
+		yum makecache && yum install -y wget
+
+		# Download Xilinx FPGA packages
+		wget -O xrt.rpm https://github.com/inaccel/driver/releases/download/xilinx-fpga-${RELEASE}/xrt-${RELEASE}_${ID}${VERSION_ID}-1.x86_64.rpm
+		wget -O xrt-${CLOUD_PROVIDER}.rpm https://github.com/inaccel/driver/releases/download/xilinx-fpga-${RELEASE}/xrt-${CLOUD_PROVIDER}-${RELEASE}_${ID}${VERSION_ID}-1.x86_64.rpm
+
+		# Download InAccel runtime
+		wget -O inaccel-fpga.rpm https://dl.cloudsmith.io/public/inaccel/stable/rpm/any-distro/any-version/x86_64/inaccel-fpga-${INACCEL_FPGA}-1.x86_64.rpm
+
 		VERSION=$(cat /etc/centos-release | cut -d " " -f 4)
 		MAJOR_VERSION=$(echo ${VERSION} | cut -d . -f 1)
 		MINOR_VERSION=$(echo ${VERSION} | cut -d . -f 2)
@@ -106,7 +104,20 @@ if [ ${CLOUD_PROVIDER:-} ] && [ ${XILINX_FPGA:-} ]; then
 		else
 			yum upgrade -y ./inaccel-fpga.rpm
 		fi
+
+		setenforce 1
 	elif [ ${ID} = ubuntu ]; then
+		export DEBIAN_FRONTEND=noninteractive
+
+		apt update && apt install -y wget
+
+		# Download Xilinx FPGA packages
+		wget -O xrt.deb https://github.com/inaccel/driver/releases/download/xilinx-fpga-${RELEASE}/xrt_${RELEASE}_${ID}${VERSION_ID}_amd64.deb
+		wget -O xrt-${CLOUD_PROVIDER}.deb https://github.com/inaccel/driver/releases/download/xilinx-fpga-${RELEASE}/xrt-${CLOUD_PROVIDER}_${RELEASE}_${ID}${VERSION_ID}_amd64.deb
+
+		# Download InAccel runtime
+		wget -O inaccel-fpga.deb https://dl.cloudsmith.io/public/inaccel/stable/deb/any-distro/pool/any-version/main/i/in/inaccel-fpga_2.0.2/inaccel-fpga_${INACCEL_FPGA}_amd64.deb
+
 		# Install Xilinx FPGA packages
 		apt install -o Dpkg::Options::=--refuse-downgrade -y --allow-downgrades ./xrt.deb
 		apt install -o Dpkg::Options::=--refuse-downgrade -y --allow-downgrades ./xrt-${CLOUD_PROVIDER}.deb
