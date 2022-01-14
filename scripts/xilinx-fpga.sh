@@ -13,7 +13,7 @@ if [ ${CLOUD_PROVIDER:-} ] && [ ${XILINX_FPGA:-} ]; then
 	RELEASE=202120.2.12.427
 
 	# InAccel runtime
-	INACCEL_FPGA=2.0.2
+	INACCEL_FPGA=2.1.0
 
 	. /etc/os-release
 
@@ -21,11 +21,11 @@ if [ ${CLOUD_PROVIDER:-} ] && [ ${XILINX_FPGA:-} ]; then
 		yum makecache && yum install -y wget
 
 		# Download Xilinx FPGA packages
-		wget -O xrt.rpm https://github.com/inaccel/driver/releases/download/xilinx-fpga-${RELEASE}/xrt-${RELEASE}_${ID}${VERSION_ID}-1.x86_64.rpm
-		wget -O xrt-${CLOUD_PROVIDER}.rpm https://github.com/inaccel/driver/releases/download/xilinx-fpga-${RELEASE}/xrt-${CLOUD_PROVIDER}-${RELEASE}_${ID}${VERSION_ID}-1.x86_64.rpm
+		wget -O xrt.rpm "https://github.com/inaccel/driver/releases/download/xilinx-fpga-${RELEASE}/xrt-${RELEASE}_${ID}${VERSION_ID}-1.x86_64.rpm"
+		wget -O xrt-${CLOUD_PROVIDER}.rpm "https://github.com/inaccel/driver/releases/download/xilinx-fpga-${RELEASE}/xrt-${CLOUD_PROVIDER}-${RELEASE}_${ID}${VERSION_ID}-1.x86_64.rpm"
 
 		# Download InAccel runtime
-		wget -O inaccel-fpga.rpm https://dl.cloudsmith.io/public/inaccel/stable/rpm/any-distro/any-version/x86_64/inaccel-fpga-${INACCEL_FPGA}-1.x86_64.rpm
+		wget -O inaccel-fpga.rpm "https://dl.cloudsmith.io/public/inaccel/stable/rpm/any-distro/any-version/x86_64/inaccel-fpga-${INACCEL_FPGA}-1.x86_64.rpm"
 
 		# Install Extra Packages for Enterprise Linux (EPEL)
 		amazon-linux-extras install -y epel
@@ -54,11 +54,11 @@ if [ ${CLOUD_PROVIDER:-} ] && [ ${XILINX_FPGA:-} ]; then
 		yum makecache && yum install -y wget
 
 		# Download Xilinx FPGA packages
-		wget -O xrt.rpm https://github.com/inaccel/driver/releases/download/xilinx-fpga-${RELEASE}/xrt-${RELEASE}_${ID}${VERSION_ID}-1.x86_64.rpm
-		wget -O xrt-${CLOUD_PROVIDER}.rpm https://github.com/inaccel/driver/releases/download/xilinx-fpga-${RELEASE}/xrt-${CLOUD_PROVIDER}-${RELEASE}_${ID}${VERSION_ID}-1.x86_64.rpm
+		wget -O xrt.rpm "https://github.com/inaccel/driver/releases/download/xilinx-fpga-${RELEASE}/xrt-${RELEASE}_${ID}${VERSION_ID}-1.x86_64.rpm"
+		wget -O xrt-${CLOUD_PROVIDER}.rpm "https://github.com/inaccel/driver/releases/download/xilinx-fpga-${RELEASE}/xrt-${CLOUD_PROVIDER}-${RELEASE}_${ID}${VERSION_ID}-1.x86_64.rpm"
 
 		# Download InAccel runtime
-		wget -O inaccel-fpga.rpm https://dl.cloudsmith.io/public/inaccel/stable/rpm/any-distro/any-version/x86_64/inaccel-fpga-${INACCEL_FPGA}-1.x86_64.rpm
+		wget -O inaccel-fpga.rpm "https://dl.cloudsmith.io/public/inaccel/stable/rpm/any-distro/any-version/x86_64/inaccel-fpga-${INACCEL_FPGA}-1.x86_64.rpm"
 
 		VERSION=$(cat /etc/centos-release | cut -d " " -f 4)
 		MAJOR_VERSION=$(echo ${VERSION} | cut -d . -f 1)
@@ -112,11 +112,11 @@ if [ ${CLOUD_PROVIDER:-} ] && [ ${XILINX_FPGA:-} ]; then
 		apt update && apt install -y wget
 
 		# Download Xilinx FPGA packages
-		wget -O xrt.deb https://github.com/inaccel/driver/releases/download/xilinx-fpga-${RELEASE}/xrt_${RELEASE}_${ID}${VERSION_ID}_amd64.deb
-		wget -O xrt-${CLOUD_PROVIDER}.deb https://github.com/inaccel/driver/releases/download/xilinx-fpga-${RELEASE}/xrt-${CLOUD_PROVIDER}_${RELEASE}_${ID}${VERSION_ID}_amd64.deb
+		wget -O xrt.deb "https://github.com/inaccel/driver/releases/download/xilinx-fpga-${RELEASE}/xrt_${RELEASE}_${ID}${VERSION_ID}_amd64.deb"
+		wget -O xrt-${CLOUD_PROVIDER}.deb "https://github.com/inaccel/driver/releases/download/xilinx-fpga-${RELEASE}/xrt-${CLOUD_PROVIDER}_${RELEASE}_${ID}${VERSION_ID}_amd64.deb"
 
 		# Download InAccel runtime
-		wget -O inaccel-fpga.deb https://dl.cloudsmith.io/public/inaccel/stable/deb/any-distro/pool/any-version/main/i/in/inaccel-fpga_2.0.2/inaccel-fpga_${INACCEL_FPGA}_amd64.deb
+		wget -O inaccel-fpga.deb "https://dl.cloudsmith.io/public/inaccel/stable/deb/any-distro/pool/any-version/main/i/in/inaccel-fpga_${INACCEL_FPGA}/inaccel-fpga_${INACCEL_FPGA}_amd64.deb"
 
 		# Install Xilinx FPGA packages
 		apt install -o Dpkg::Options::=--refuse-downgrade -y --allow-downgrades ./xrt.deb
