@@ -1,4 +1,4 @@
-name: release-xilinx-fpga
+name: Xilinx FPGA
 on:
   workflow_dispatch:
     inputs:
