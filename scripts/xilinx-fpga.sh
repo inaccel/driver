@@ -49,6 +49,10 @@ if [ ${CLOUD_PROVIDER:-} ] && [ ${XILINX_FPGA:-} ]; then
 			yum upgrade -y ./inaccel-fpga.rpm
 		fi
 	elif [ ${ID} = centos ]; then
+		if [ ${VERSION_ID} -eq 8 ]; then
+			sed -e "s|mirrorlist=|#mirrorlist=|g" -e "s|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g" -i /etc/yum.repos.d/CentOS-*
+		fi
+
 		setenforce 0
 
 		yum makecache && yum install -y wget
