@@ -111,6 +111,9 @@ if [ ${CLOUD_PROVIDER:-} ] && devices 10ee: 1d0f:1042 1d0f:f010; then
 		# Download InAccel runtime
 		wget -O inaccel-fpga.deb "https://dl.cloudsmith.io/public/inaccel/stable/deb/any-distro/pool/any-version/main/i/in/inaccel-fpga_${INACCEL_FPGA}/inaccel-fpga_${INACCEL_FPGA}_amd64.deb"
 
+		# Install Linux Extra Modules (required by Xilinx FPGA packages)
+		apt install -y linux-modules-extra-$(uname -r)
+
 		# Install Xilinx FPGA packages
 		apt install -o Dpkg::Options::=--refuse-downgrade -y --allow-downgrades ./xrt.deb
 		apt install -o Dpkg::Options::=--refuse-downgrade -y --allow-downgrades ./xrt-${CLOUD_PROVIDER}.deb
