@@ -1,15 +1,4 @@
-if grep -r --include vendor 0x10ee /sys/devices; then
-	XILINX_FPGA=0x10ee
-else
-	for device in $(grep -r --include vendor 0x1d0f /sys/devices); do
-		if grep -E "0x1042|0xf010" $(dirname ${device})/device; then
-			XILINX_FPGA=0x1d0f
-			break
-		fi
-	done
-fi
-
-if [ ${CLOUD_PROVIDER:-} ] && [ ${XILINX_FPGA:-} ]; then
+if [ ${CLOUD_PROVIDER:-} ] && devices 10ee: 1d0f:1042 1d0f:f010; then
 	RELEASE=202120.2.12.427
 
 	# InAccel runtime

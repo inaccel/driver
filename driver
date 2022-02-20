@@ -49,4 +49,20 @@ cd ${TMPDIR}
 
 trap "rm -fr ${TMPDIR} ; umount /etc/resolv.conf" EXIT
 
+# <vendor>:[<device>] ...
+devices() {
+	for id in ${@}; do
+		vendor=$(echo ${id} | cut -d : -f 1)
+		device=$(echo ${id} | cut -d : -f 2)
+
+		for match in $(grep -r --include vendor 0x${vendor} /sys/devices); do
+			if grep 0x${device} $(dirname ${match})/device; then
+				return 0
+			fi
+		done
+	done
+
+	return 1
+}
+
 ################################################################################
