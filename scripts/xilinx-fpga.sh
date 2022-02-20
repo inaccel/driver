@@ -1,4 +1,4 @@
-if [ ${CLOUD_PROVIDER:-} ] && devices 10ee: 1d0f:1042 1d0f:f010; then
+if devices 10ee: 1d0f:1042 1d0f:f010; then
 	RELEASE=202120.2.12.427
 
 	# InAccel runtime
@@ -11,7 +11,9 @@ if [ ${CLOUD_PROVIDER:-} ] && devices 10ee: 1d0f:1042 1d0f:f010; then
 
 		# Download Xilinx FPGA packages
 		wget -O xrt.rpm "https://github.com/inaccel/driver/releases/download/xilinx-fpga-${RELEASE}/xrt-${RELEASE}_${ID}${VERSION_ID}-1.x86_64.rpm"
-		wget -O xrt-${CLOUD_PROVIDER}.rpm "https://github.com/inaccel/driver/releases/download/xilinx-fpga-${RELEASE}/xrt-${CLOUD_PROVIDER}-${RELEASE}_${ID}${VERSION_ID}-1.x86_64.rpm"
+		if [ ${CLOUD_PROVIDER:-} ]; then
+			wget -O xrt-${CLOUD_PROVIDER}.rpm "https://github.com/inaccel/driver/releases/download/xilinx-fpga-${RELEASE}/xrt-${CLOUD_PROVIDER}-${RELEASE}_${ID}${VERSION_ID}-1.x86_64.rpm"
+		fi
 
 		# Download InAccel runtime
 		wget -O inaccel-fpga.rpm "https://dl.cloudsmith.io/public/inaccel/stable/rpm/any-distro/any-version/x86_64/inaccel-fpga-${INACCEL_FPGA}-1.x86_64.rpm"
@@ -25,10 +27,14 @@ if [ ${CLOUD_PROVIDER:-} ] && devices 10ee: 1d0f:1042 1d0f:f010; then
 		# Install Xilinx FPGA packages
 		if ! yum list installed xrt; then
 			yum install -y ./xrt.rpm
-			yum install -y ./xrt-${CLOUD_PROVIDER}.rpm
+			if [ ${CLOUD_PROVIDER:-} ]; then
+				yum install -y ./xrt-${CLOUD_PROVIDER}.rpm
+			fi
 		else
 			yum upgrade -y ./xrt.rpm
-			yum upgrade -y ./xrt-${CLOUD_PROVIDER}.rpm
+			if [ ${CLOUD_PROVIDER:-} ]; then
+				yum upgrade -y ./xrt-${CLOUD_PROVIDER}.rpm
+			fi
 		fi
 
 		# Install InAccel runtime
@@ -48,7 +54,9 @@ if [ ${CLOUD_PROVIDER:-} ] && devices 10ee: 1d0f:1042 1d0f:f010; then
 
 		# Download Xilinx FPGA packages
 		wget -O xrt.rpm "https://github.com/inaccel/driver/releases/download/xilinx-fpga-${RELEASE}/xrt-${RELEASE}_${ID}${VERSION_ID}-1.x86_64.rpm"
-		wget -O xrt-${CLOUD_PROVIDER}.rpm "https://github.com/inaccel/driver/releases/download/xilinx-fpga-${RELEASE}/xrt-${CLOUD_PROVIDER}-${RELEASE}_${ID}${VERSION_ID}-1.x86_64.rpm"
+		if [ ${CLOUD_PROVIDER:-} ]; then
+			wget -O xrt-${CLOUD_PROVIDER}.rpm "https://github.com/inaccel/driver/releases/download/xilinx-fpga-${RELEASE}/xrt-${CLOUD_PROVIDER}-${RELEASE}_${ID}${VERSION_ID}-1.x86_64.rpm"
+		fi
 
 		# Download InAccel runtime
 		wget -O inaccel-fpga.rpm "https://dl.cloudsmith.io/public/inaccel/stable/rpm/any-distro/any-version/x86_64/inaccel-fpga-${INACCEL_FPGA}-1.x86_64.rpm"
@@ -85,10 +93,14 @@ if [ ${CLOUD_PROVIDER:-} ] && devices 10ee: 1d0f:1042 1d0f:f010; then
 		# Install Xilinx FPGA packages
 		if ! yum list installed xrt; then
 			yum install -y ${APPSTREAM:+--enablerepo=${APPSTREAM}} ${POWERTOOLS:+--enablerepo=${POWERTOOLS}} ./xrt.rpm
-			yum install -y ${APPSTREAM:+--enablerepo=${APPSTREAM}} ${POWERTOOLS:+--enablerepo=${POWERTOOLS}} ./xrt-${CLOUD_PROVIDER}.rpm
+			if [ ${CLOUD_PROVIDER:-} ]; then
+				yum install -y ${APPSTREAM:+--enablerepo=${APPSTREAM}} ${POWERTOOLS:+--enablerepo=${POWERTOOLS}} ./xrt-${CLOUD_PROVIDER}.rpm
+			fi
 		else
 			yum upgrade -y ${APPSTREAM:+--enablerepo=${APPSTREAM}} ${POWERTOOLS:+--enablerepo=${POWERTOOLS}} ./xrt.rpm
-			yum upgrade -y ${APPSTREAM:+--enablerepo=${APPSTREAM}} ${POWERTOOLS:+--enablerepo=${POWERTOOLS}} ./xrt-${CLOUD_PROVIDER}.rpm
+			if [ ${CLOUD_PROVIDER:-} ]; then
+				yum upgrade -y ${APPSTREAM:+--enablerepo=${APPSTREAM}} ${POWERTOOLS:+--enablerepo=${POWERTOOLS}} ./xrt-${CLOUD_PROVIDER}.rpm
+			fi
 		fi
 
 		# Install InAccel runtime
@@ -106,7 +118,9 @@ if [ ${CLOUD_PROVIDER:-} ] && devices 10ee: 1d0f:1042 1d0f:f010; then
 
 		# Download Xilinx FPGA packages
 		wget -O xrt.deb "https://github.com/inaccel/driver/releases/download/xilinx-fpga-${RELEASE}/xrt_${RELEASE}_${ID}${VERSION_ID}_amd64.deb"
-		wget -O xrt-${CLOUD_PROVIDER}.deb "https://github.com/inaccel/driver/releases/download/xilinx-fpga-${RELEASE}/xrt-${CLOUD_PROVIDER}_${RELEASE}_${ID}${VERSION_ID}_amd64.deb"
+		if [ ${CLOUD_PROVIDER:-} ]; then
+			wget -O xrt-${CLOUD_PROVIDER}.deb "https://github.com/inaccel/driver/releases/download/xilinx-fpga-${RELEASE}/xrt-${CLOUD_PROVIDER}_${RELEASE}_${ID}${VERSION_ID}_amd64.deb"
+		fi
 
 		# Download InAccel runtime
 		wget -O inaccel-fpga.deb "https://dl.cloudsmith.io/public/inaccel/stable/deb/any-distro/pool/any-version/main/i/in/inaccel-fpga_${INACCEL_FPGA}/inaccel-fpga_${INACCEL_FPGA}_amd64.deb"
@@ -116,7 +130,9 @@ if [ ${CLOUD_PROVIDER:-} ] && devices 10ee: 1d0f:1042 1d0f:f010; then
 
 		# Install Xilinx FPGA packages
 		apt install -o Dpkg::Options::=--refuse-downgrade -y --allow-downgrades ./xrt.deb
-		apt install -o Dpkg::Options::=--refuse-downgrade -y --allow-downgrades ./xrt-${CLOUD_PROVIDER}.deb
+		if [ ${CLOUD_PROVIDER:-} ]; then
+			apt install -o Dpkg::Options::=--refuse-downgrade -y --allow-downgrades ./xrt-${CLOUD_PROVIDER}.deb
+		fi
 
 		# Install InAccel runtime
 		apt install -o Dpkg::Options::=--refuse-downgrade -y --allow-downgrades ./inaccel-fpga.deb
