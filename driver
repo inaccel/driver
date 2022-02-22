@@ -49,14 +49,15 @@ cd ${TMPDIR}
 
 trap "rm -fr ${TMPDIR} ; umount /etc/resolv.conf" EXIT
 
-# <vendor>:[<device>] ...
+# [<vendor>]:[<device>][:<class>] ...
 devices() {
 	for id in ${@}; do
 		vendor=$(echo ${id} | cut -d : -f 1)
 		device=$(echo ${id} | cut -d : -f 2)
+		class=$(echo ${id} | cut -d : -f 3)
 
-		for match in $(grep -r --include vendor 0x${vendor} /sys/devices); do
-			if grep 0x${device} $(dirname ${match})/device; then
+		for path in /sys/bus/pci/devices/*; do
+			if grep -q 0x${vendor} ${path}/vendor && grep -q 0x${device} ${path}/device && grep -q 0x${class} ${path}/class; then
 				return 0
 			fi
 		done
