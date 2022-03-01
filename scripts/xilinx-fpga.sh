@@ -2,7 +2,7 @@ if devices 10ee: 1d0f:1042 1d0f:f010; then
 	RELEASE=202120.2.12.427
 
 	# InAccel runtime
-	INACCEL_FPGA=2.1.0
+	INACCEL_FPGA=2.2.0
 
 	. /etc/os-release
 
