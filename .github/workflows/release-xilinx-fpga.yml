@@ -39,11 +39,6 @@ jobs:
           &nbsp;&nbsp;&nbsp;&nbsp;[ [xrt](https://github.com/inaccel/driver/releases/download/xilinx-fpga-${{ github.event.inputs.release }}/xrt-${{ github.event.inputs.release }}_centos8-1.x86_64.rpm) | [xrt-aws](https://github.com/inaccel/driver/releases/download/xilinx-fpga-${{ github.event.inputs.release }}/xrt-aws-${{ github.event.inputs.release }}_centos8-1.x86_64.rpm) | [xrt-azure](https://github.com/inaccel/driver/releases/download/xilinx-fpga-${{ github.event.inputs.release }}/xrt-azure-${{ github.event.inputs.release }}_centos8-1.x86_64.rpm) ]
           </p></details>
 
-          <details><summary>Ubuntu 16.04</summary><p>
-
-          &nbsp;&nbsp;&nbsp;&nbsp;[ [xrt](https://github.com/inaccel/driver/releases/download/xilinx-fpga-${{ github.event.inputs.release }}/xrt_${{ github.event.inputs.release }}_ubuntu16.04_amd64.deb) | [xrt-aws](https://github.com/inaccel/driver/releases/download/xilinx-fpga-${{ github.event.inputs.release }}/xrt-aws_${{ github.event.inputs.release }}_ubuntu16.04_amd64.deb) | [xrt-azure](https://github.com/inaccel/driver/releases/download/xilinx-fpga-${{ github.event.inputs.release }}/xrt-azure_${{ github.event.inputs.release }}_ubuntu16.04_amd64.deb) ]
-          </p></details>
-
           <details><summary>Ubuntu 18.04</summary><p>
 
           &nbsp;&nbsp;&nbsp;&nbsp;[ [xrt](https://github.com/inaccel/driver/releases/download/xilinx-fpga-${{ github.event.inputs.release }}/xrt_${{ github.event.inputs.release }}_ubuntu18.04_amd64.deb) | [xrt-aws](https://github.com/inaccel/driver/releases/download/xilinx-fpga-${{ github.event.inputs.release }}/xrt-aws_${{ github.event.inputs.release }}_ubuntu18.04_amd64.deb) | [xrt-azure](https://github.com/inaccel/driver/releases/download/xilinx-fpga-${{ github.event.inputs.release }}/xrt-azure_${{ github.event.inputs.release }}_ubuntu18.04_amd64.deb) ]

@@ -2,7 +2,6 @@ all:
 	BUILD +amazonlinux2
 	BUILD +centos7
 	BUILD +centos8
-	BUILD +ubuntu16.04
 	BUILD +ubuntu18.04
 	BUILD +ubuntu20.04
 
@@ -73,8 +72,6 @@ centos7:
 centos8:
 	BUILD --build-arg=NAME=centos --build-arg=TAG=8 +core
 
-ubuntu16.04:
-	BUILD --build-arg=NAME=ubuntu --build-arg=TAG=16.04 +core
 ubuntu18.04:
 	BUILD --build-arg=NAME=ubuntu --build-arg=TAG=18.04 +core
 ubuntu20.04:
