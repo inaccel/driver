@@ -19,6 +19,10 @@ core:
 	RUN test "${RELEASE}"
 	GIT CLONE --branch ${RELEASE} http://www.github.com/Xilinx/XRT.git /XRT
 
+	IF [ ${NAME} = "centos" ] && [ ${TAG} = "8" ]
+		RUN sed -e "s|mirrorlist=|#mirrorlist=|g" -e "s|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g" -i /etc/yum.repos.d/CentOS-*
+	END
+
 	# APT
 	IF [ ${NAME} = "ubuntu" ]
 		ENV DEBIAN_FRONTEND=noninteractive
