@@ -7,7 +7,8 @@ if devices 10ee: 1d0f:1042 1d0f:f010; then
 	. /etc/os-release
 
 	if [ ${ID} = amzn ]; then
-		yum makecache && yum install -y ca-certificates wget
+		yum makecache
+		yum install -y ca-certificates wget
 
 		# Download Xilinx FPGA packages
 		wget -O xrt.rpm "https://github.com/inaccel/driver/releases/download/xilinx-fpga-${RELEASE}/xrt-${RELEASE}_${ID}${VERSION_ID}-1.x86_64.rpm"
@@ -50,7 +51,8 @@ if devices 10ee: 1d0f:1042 1d0f:f010; then
 
 		setenforce 0
 
-		yum makecache && yum install -y ca-certificates wget
+		yum makecache
+		yum install -y ca-certificates wget
 
 		# Download Xilinx FPGA packages
 		wget -O xrt.rpm "https://github.com/inaccel/driver/releases/download/xilinx-fpga-${RELEASE}/xrt-${RELEASE}_${ID}${VERSION_ID}-1.x86_64.rpm"
@@ -114,7 +116,8 @@ if devices 10ee: 1d0f:1042 1d0f:f010; then
 	elif [ ${ID} = ubuntu ]; then
 		export DEBIAN_FRONTEND=noninteractive
 
-		apt update && apt install -y ca-certificates wget
+		apt update
+		apt install -y ca-certificates wget
 
 		# Download Xilinx FPGA packages
 		wget -O xrt.deb "https://github.com/inaccel/driver/releases/download/xilinx-fpga-${RELEASE}/xrt_${RELEASE}_${ID}${VERSION_ID}_amd64.deb"
