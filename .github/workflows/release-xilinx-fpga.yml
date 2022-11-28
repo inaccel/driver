@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - uses: earthly/actions/setup-earthly@v1
     - name: Build 'Xilinx FPGA' drivers
       run: earthly --build-arg=RELEASE=${{ github.event.inputs.release }} +all
