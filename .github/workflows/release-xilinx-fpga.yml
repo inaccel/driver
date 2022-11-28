@@ -48,6 +48,11 @@ jobs:
 
           &nbsp;&nbsp;&nbsp;&nbsp;[ [xrt](https://github.com/inaccel/driver/releases/download/xilinx-fpga-${{ github.event.inputs.release }}/xrt_${{ github.event.inputs.release }}_ubuntu20.04_amd64.deb) | [xrt-aws](https://github.com/inaccel/driver/releases/download/xilinx-fpga-${{ github.event.inputs.release }}/xrt-aws_${{ github.event.inputs.release }}_ubuntu20.04_amd64.deb) | [xrt-azure](https://github.com/inaccel/driver/releases/download/xilinx-fpga-${{ github.event.inputs.release }}/xrt-azure_${{ github.event.inputs.release }}_ubuntu20.04_amd64.deb) ]
           </p></details>
+
+          <details><summary>Ubuntu 22.04</summary><p>
+
+          &nbsp;&nbsp;&nbsp;&nbsp;[ [xrt](https://github.com/inaccel/driver/releases/download/xilinx-fpga-${{ github.event.inputs.release }}/xrt_${{ github.event.inputs.release }}_ubuntu22.04_amd64.deb) | [xrt-aws](https://github.com/inaccel/driver/releases/download/xilinx-fpga-${{ github.event.inputs.release }}/xrt-aws_${{ github.event.inputs.release }}_ubuntu22.04_amd64.deb) | [xrt-azure](https://github.com/inaccel/driver/releases/download/xilinx-fpga-${{ github.event.inputs.release }}/xrt-azure_${{ github.event.inputs.release }}_ubuntu22.04_amd64.deb) ]
+          </p></details>
         files: build/xilinx-fpga/packages/*
         name: Xilinx FPGA ${{ github.event.inputs.release }}
         tag_name: xilinx-fpga-${{ github.event.inputs.release }}

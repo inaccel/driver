@@ -6,6 +6,7 @@ all:
 	BUILD +centos8
 	BUILD +ubuntu18.04
 	BUILD +ubuntu20.04
+	BUILD +ubuntu22.04
 
 core:
 	ARG NAME
@@ -35,9 +36,7 @@ core:
 		RUN yum makecache
 	END
 
-	RUN sed -i 's/amazon-linux-extras install epel/amazon-linux-extras install -y epel/g' XRT/src/runtime_src/tools/scripts/xrtdeps.sh && \
-		sed -i 's/apt install clang-tidy/apt install -y clang-tidy/g' XRT/src/runtime_src/tools/scripts/xrtdeps.sh && \
-		sed -i 's/kernel-devel-$(uname -r)/kernel-devel/g' XRT/src/runtime_src/tools/scripts/xrtdeps.sh && \
+	RUN sed -i 's/kernel-devel-$(uname -r)/kernel-devel/g' XRT/src/runtime_src/tools/scripts/xrtdeps.sh && \
 		sed -i 's/kernel-headers-$(uname -r)/kernel-headers/g' XRT/src/runtime_src/tools/scripts/xrtdeps.sh && \
 		sed -i 's/linux-headers-$(uname -r)/linux-headers-generic/g' XRT/src/runtime_src/tools/scripts/xrtdeps.sh
 
@@ -82,3 +81,5 @@ ubuntu18.04:
 	BUILD --build-arg=NAME=ubuntu --build-arg=TAG=18.04 +core
 ubuntu20.04:
 	BUILD --build-arg=NAME=ubuntu --build-arg=TAG=20.04 +core
+ubuntu22.04:
+	BUILD --build-arg=NAME=ubuntu --build-arg=TAG=22.04 +core
