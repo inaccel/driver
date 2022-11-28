@@ -1,3 +1,5 @@
+VERSION 0.5
+
 all:
 	BUILD +amazonlinux2
 	BUILD +centos7
