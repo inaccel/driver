@@ -1,8 +1,8 @@
 if devices 10ee: 1d0f:1042 1d0f:f010; then
-	RELEASE=202220.2.14.354
+	RELEASE=${XILINX_FPGA_RELEASE:-202220.2.14.354}
 
 	# InAccel runtime
-	INACCEL_FPGA=2.2.4
+	INACCEL_FPGA=${INACCEL_FPGA:-2.2.5}
 
 	. /etc/os-release
 
